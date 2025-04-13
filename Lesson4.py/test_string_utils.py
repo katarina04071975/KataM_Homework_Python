@@ -51,15 +51,25 @@ def test_delete_symbol(input_string, symbol, expected_output):
     utils = StringUtils()
     assert utils.delete_symbol(input_string, symbol) == expected_output
 
-
-
-
-@pytest.mark.parametrize("input_string, symbol, expected_output", [
-    ("SkyPro", "k", "SyPro"),  # Позитивный тест 1
-    ("SkyPro", "Pro", "Sky"),   # Позитивный тест 2
-    ("SkyPro", "x", "SkyPro"),  # Негативный тест 1 (символ отсутствует)
-    ("SkyPro", "", "SkyPro")     # Негативный тест 2 (пустая строка)
+# Позитивные тесты
+@pytest.mark.parametrize("string, symbol, expected", [
+    ("SkyPro", "S", True),
+    ("SkyPro", "s", False),  # Тест на чувствительность к регистру
+    ("SkyPro", "x", False),
+    ("", "a", False),
+    ("123", "2", True),
+    (" ", " ", True),
+    ("Hello, World!", "World", True),  # Проверка на наличие подстроки
+    ("Hello, World!", "world", False),  # Чувствительность к регистру
 ])
-def test_delete_symbol(input_string, symbol, expected_output):
+def test_contains(string, symbol, expected):
     utils = StringUtils()
-    assert utils.delete_symbol(input_string, symbol) == expected_output
+    assert utils.contains(string, symbol) == expected
+
+    # Негативные тесты
+
+def test_contains_with_none():
+    utils = StringUtils()
+    with pytest.raises(TypeError):
+        utils.contains(None, "a")
+
